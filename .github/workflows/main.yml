@@ -41,7 +41,7 @@ jobs:
       with:
         image-ref: microservice:${{ github.sha }}
         format: 'sarif'
-        output: 'trivy-results.sarif'
+        output: 'trivyResults.sarif'
         severity: 'HIGH,CRITICAL'
         ignore-unfixed: true
 
@@ -49,5 +49,4 @@ jobs:
     - name: Upload Trivy scan results
       uses: github/codeql-action/upload-sarif@v3
       with:
-        sarif_file: 'trivy-results.sarif'
-        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        sarif_file: 'trivyResults.sarif'
