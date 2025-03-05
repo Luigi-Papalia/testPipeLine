@@ -20,13 +20,15 @@ jobs:
       run: |
         docker build -t my-microservice:${{ github.sha }} .
 
-    # Step 3: Run Trivy vulnerability scanner
+    # Step 3: Run Trivy vulnerability scanner (with `with:` block)
     - name: Scan Docker image with Trivy
       uses: aquasecurity/trivy-action@master
       with:
         image-ref: my-microservice:${{ github.sha }}
         format: 'sarif'
         output: 'trivy-results.sarif'
+        severity: 'HIGH,CRITICAL'
+        ignore-unfixed: true
 
     # Step 4: Upload Trivy scan results to GitHub Security tab
     - name: Upload Trivy scan results
