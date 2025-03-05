@@ -14,13 +14,24 @@ jobs:
     # Step 1: Checkout the repository
     - name: Checkout code
       uses: actions/checkout@v3
+      
+    # Step 2: Set up Java environment
+    - name: Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
 
-    # Step 2: Build Docker image (if applicable)
+    # Step 3: Build the project with Maven
+    - name: Build with Maven
+      run: mvn clean package
+      
+    # Step 4: Build Docker image 
     - name: Build Docker image
       run: |
         docker build -t microservice:${{ github.sha }} .
 
-    # Step 3: Run Trivy vulnerability scanner (with `with:` block)
+    # Step 5: Run Trivy vulnerability scanner (with `with:` block)
     - name: Scan Docker image with Trivy
       uses: aquasecurity/trivy-action@master
       with:
@@ -30,7 +41,7 @@ jobs:
         severity: 'HIGH,CRITICAL'
         ignore-unfixed: true
 
-    # Step 4: Upload Trivy scan results to GitHub Security tab
+    # Step 6: Upload Trivy scan results to GitHub Security tab
     - name: Upload Trivy scan results
       uses: github/codeql-action/upload-sarif@v2
       with:
