@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  contents: read
   security-events: write
 
 jobs:
